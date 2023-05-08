@@ -44,36 +44,19 @@
 		maxZoom: 16
 	}).addTo(map);
 
-	// const marker = L.marker([51.5, -0.09]).addTo(map)
-	// 	.bindPopup('<b>Hello world!</b><br />I am a popup.').openPopup();
+	var blackIcon = L.icon({
+		iconUrl: 'svg/map-pin-marker.svg', 
+		shadowUrl: 'svg/map-pin-marker.svg', // usually a different file, no shadow file available
 
-	const shapeStyles = {
-		color: 'grey',
-		fillColor: '#333',
-		fillOpacity: 0.5,
-		radius: 500
-	}
+		iconSize: [38, 95], // size of the icon
+		shadowSize: [50, 64], // size of the shadow
+		iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+		shadowAnchor: [4, 62], // same for the shadow
+		popupAnchor: [-3, -76]  // point from which the popup should open relative to the iconAnchor
+	})
 
-	const circle = L.circle([33.855348810045356, -84.01982156957057], shapeStyles).addTo(map).bindPopup('I am a circle.');
-
-	const polygon = L.polygon([
-		[33.857648810045356, -84.01982153057057],
-		[35.855348819845356, -86.01982156957057],
-		[39.855348810045356, -88.019821515657057]
-	], shapeStyles).addTo(map).bindPopup('I am a polygon.');
-
-
-	// const popup = L.popup()
-	// 	.setLatLng([51.513, -0.09])
-	// 	.setContent('I am a standalone popup.')
-	// 	.openOn(map);
-
-	// function onMapClick(e) {
-	// 	popup
-	// 		.setLatLng(e.latlng)
-	// 		.setContent(`You clicked the map at ${e.latlng.toString()}`)
-	// 		.openOn(map);
-	// }
+	L.marker([33.855348810045356, -84.01982156957057]).addTo(map).bindPopup('Snellville, GA');
+	L.marker([33.9562, -83.9880], {icon: blackIcon}).addTo(map).bindPopup('Lawrenceville, GA');
 
 	map.on('click', onMapClick);
 
