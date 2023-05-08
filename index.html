@@ -35,37 +35,36 @@
 <div id="map" style="width: 600px; height: 400px;"></div>
 <script>
 
-	const map = L.map('map', {
-		// add options
-		zoomControl: false
-	}).setView([51.505, -0.09], 13);
+	const map = L.map('map').setView([33.855348810045356, -84.01982156957057], 12);
+          
 
-	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		maxZoom: 19,
-		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	const tiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', 
+	{
+		attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
+		maxZoom: 16
 	}).addTo(map);
 
-	const marker = L.marker([51.5, -0.09]).addTo(map)
-		.bindPopup('<b>Hello world!</b><br />I am a popup.').openPopup();
+	// const marker = L.marker([51.5, -0.09]).addTo(map)
+	// 	.bindPopup('<b>Hello world!</b><br />I am a popup.').openPopup();
 
-	const circle = L.circle([51.508, -0.11], {
-		color: 'red',
-		fillColor: '#f03',
-		fillOpacity: 0.5,
-		radius: 500
-	}).addTo(map).bindPopup('I am a circle.');
+	// const circle = L.circle([51.508, -0.11], {
+	// 	color: 'red',
+	// 	fillColor: '#f03',
+	// 	fillOpacity: 0.5,
+	// 	radius: 500
+	// }).addTo(map).bindPopup('I am a circle.');
 
-	const polygon = L.polygon([
-		[51.509, -0.08],
-		[51.503, -0.06],
-		[51.51, -0.047]
-	]).addTo(map).bindPopup('I am a polygon.');
+	// const polygon = L.polygon([
+	// 	[51.509, -0.08],
+	// 	[51.503, -0.06],
+	// 	[51.51, -0.047]
+	// ]).addTo(map).bindPopup('I am a polygon.');
 
 
-	const popup = L.popup()
-		.setLatLng([51.513, -0.09])
-		.setContent('I am a standalone popup.')
-		.openOn(map);
+	// const popup = L.popup()
+	// 	.setLatLng([51.513, -0.09])
+	// 	.setContent('I am a standalone popup.')
+	// 	.openOn(map);
 
 	function onMapClick(e) {
 		popup
