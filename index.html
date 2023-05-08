@@ -47,18 +47,20 @@
 	// const marker = L.marker([51.5, -0.09]).addTo(map)
 	// 	.bindPopup('<b>Hello world!</b><br />I am a popup.').openPopup();
 
-	// const circle = L.circle([51.508, -0.11], {
-	// 	color: 'red',
-	// 	fillColor: '#f03',
-	// 	fillOpacity: 0.5,
-	// 	radius: 500
-	// }).addTo(map).bindPopup('I am a circle.');
+	const shapeStyles = {
+		color: 'grey',
+		fillColor: '#333',
+		fillOpacity: 0.5,
+		radius: 500
+	}
 
-	// const polygon = L.polygon([
-	// 	[51.509, -0.08],
-	// 	[51.503, -0.06],
-	// 	[51.51, -0.047]
-	// ]).addTo(map).bindPopup('I am a polygon.');
+	const circle = L.circle([33.855348810045356, -84.01982156957057], shapeStyles).addTo(map).bindPopup('I am a circle.');
+
+	const polygon = L.polygon([
+		[33.857648810045356, -84.01982153057057],
+		[35.855348819845356, -86.01982156957057],
+		[39.855348810045356, -88.019821515657057]
+	], shapeStyles).addTo(map).bindPopup('I am a polygon.');
 
 
 	// const popup = L.popup()
@@ -66,12 +68,12 @@
 	// 	.setContent('I am a standalone popup.')
 	// 	.openOn(map);
 
-	function onMapClick(e) {
-		popup
-			.setLatLng(e.latlng)
-			.setContent(`You clicked the map at ${e.latlng.toString()}`)
-			.openOn(map);
-	}
+	// function onMapClick(e) {
+	// 	popup
+	// 		.setLatLng(e.latlng)
+	// 		.setContent(`You clicked the map at ${e.latlng.toString()}`)
+	// 		.openOn(map);
+	// }
 
 	map.on('click', onMapClick);
 
