@@ -51,20 +51,42 @@
 			min-height: 200px;
 		}
 
-		#overlay h3 {
+		#overlay h3, #slide-in h2 {
 			font-family: Arial, Helvetica, sans-serif;
 			text-align: center;
+			margin: 0;
+			padding: 0;
+			margin-bottom: 10px;
 		}
+
+		#slide-in {
+			padding: 10px;
+			position: absolute;
+			width: 250px;
+			z-index: 1000;
+			background: white;
+			margin-left: -270px;
+			transition: 1.5s;
+		}
+
+		#slide-in.in {
+			margin-left: 0px;
+		}		
 	</style>
 
 	
 </head>
 <body>
 
+<div id="slide-in">
+	<h2>More Information</h2>
+</div>
+
 <div id="overlay">
 	<h3>Map Options</h3>
 	<input type="text" id="current_center" />
 	<button id="toggleLayer">Toggle</button>
+	<button id="advanced">Advanced Toggle</button>
 </div>
 
 <div id="map" style="width: 100%;"></div>
@@ -72,8 +94,17 @@
 <script>
 
 	$('#map').height(window.innerHeight);
+	$('#slide-in').height(window.innerHeight);
 
-	const map = L.map('map').setView([33.855348810045356, -84.01982156957057], 12);
+	$(document).on('click', "#advanced", function() {
+		if($('#slide-in').hasClass('in')) {
+			$('#slide-in').removeClass('in');
+		} else {
+			$('#slide-in').addClass('in');
+		}
+	})
+
+	const map = L.map('map', { zoomControl: false }).setView([33.855348810045356, -84.01982156957057], 12);
 
 	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
