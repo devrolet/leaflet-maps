@@ -63,7 +63,10 @@
 		popupAnchor: [0, -30]  // point from which the popup should open relative to the iconAnchor
 	});
 
+	// Use default marker icon
 	L.marker([33.855348810045356, -84.01982156957057]).addTo(map).bindPopup('Snellville, GA');
+
+	// Use custom marker icon
 	L.marker([33.9562, -83.9880], {icon: blackIcon}).addTo(map).bindPopup('Lawrenceville, GA');
 
 	let popup = L.popup({ maxWidth: 400 })
@@ -73,9 +76,27 @@
 
 	let geojson = {"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ -84.1413499866286, 33.80879513146975 ],"type": "Point"}},{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ -83.98638644188586, 33.95633534887867 ],"type": "Point"}},{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ [[-84.26272022610178, 33.854703784090006 ],[-84.18036197854634, 33.743039652769866 ],[-83.96146242583328, 33.86730186936647 ],[-84.26272022610178, 33.854703784090006 ]]],"type": "Polygon"}}]}
 
-	console.log(geojson);
-
-	L.geoJSON(geojson).addTo(map);
+	// Add GeoJSON options
+	L.geoJSON(geojson, {
+		style: function(feature) {
+			return {
+				color: '#000'
+			}
+		},
+		pointToLayer: function(geoJsonPoint, latlng) {
+			return L.marker(latlng, {
+					icon: blackIcon
+				});
+		},
+		onEachFeature: function(feature, layer) {
+			if(feature.geometry.type === 'Point') {
+				layer.bindPopup('Welcome to Atlanta');
+				// The line below displays the lat/lng of the point.
+				// layer.bindPopup(feature.geometry.coordinates.join(','));
+			}
+		}
+		
+	}).addTo(map);
 
 	map.on('click', onMapClick);
 
