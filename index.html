@@ -64,10 +64,10 @@
 	});
 
 	// Use default marker icon
-	L.marker([33.855348810045356, -84.01982156957057]).addTo(map).bindPopup('Snellville, GA');
+	// L.marker([33.855348810045356, -84.01982156957057]).addTo(map).bindPopup('Snellville, GA');
 
 	// Use custom marker icon
-	L.marker([33.9562, -83.9880], {icon: blackIcon}).addTo(map).bindPopup('Lawrenceville, GA');
+	// L.marker([33.9562, -83.9880], {icon: blackIcon}).addTo(map).bindPopup('Lawrenceville, GA');
 
 	let popup = L.popup({ maxWidth: 400 })
 		.setLatLng([33.7488, -84.3877])
@@ -77,29 +77,47 @@
 	let geojson = {"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ -84.1413499866286, 33.80879513146975 ],"type": "Point"}},{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ -83.98638644188586, 33.95633534887867 ],"type": "Point"}},{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ [[-84.26272022610178, 33.854703784090006 ],[-84.18036197854634, 33.743039652769866 ],[-83.96146242583328, 33.86730186936647 ],[-84.26272022610178, 33.854703784090006 ]]],"type": "Polygon"}}]}
 
 	// Add GeoJSON options
-	let addedGeoJSON = L.geoJSON(geojson, {
-		style: function(feature) {
-			return {
-				color: '#000'
-			}
-		},
-		pointToLayer: function(geoJsonPoint, latlng) {
-			return L.marker(latlng, {
-					icon: blackIcon
-				});
-		},
-		onEachFeature: function(feature, layer) {
-			if(feature.geometry.type === 'Point') {
-				layer.bindPopup('Welcome to Atlanta');
-				// The line below displays the lat/lng of the point.
-				// layer.bindPopup(feature.geometry.coordinates.join(','));
-			}
-		}
+	// let addedGeoJSON = L.geoJSON(geojson, {
+	// 	style: function(feature) {
+	// 		return {
+	// 			color: '#000'
+	// 		}
+	// 	},
+	// 	pointToLayer: function(geoJsonPoint, latlng) {
+	// 		return L.marker(latlng, {
+	// 				icon: blackIcon
+	// 			});
+	// 	},
+	// 	onEachFeature: function(feature, layer) {
+	// 		if(feature.geometry.type === 'Point') {
+	// 			layer.bindPopup('Welcome to Atlanta');
+	// 			// The line below displays the lat/lng of the point.
+	// 			// layer.bindPopup(feature.geometry.coordinates.join(','));
+	// 		}
+	// 	}
 		
-	}).addTo(map);
+	// }).addTo(map);
+
+	let marker1 = L.marker([33.9304, -84.3733], {
+		icon: blackIcon
+	});
+
+	let marker2 = L.marker([33.6534, -84.4494], {
+		icon: blackIcon
+	});
+
+	let marker3 = L.marker([33.7748, -84.2963], {
+		icon: blackIcon
+	});
+
+	let featureGroup = L.featureGroup([marker1, marker2, marker3]).addTo(map);
 
 	// Bounds, add 20px padding
-	map.fitBounds(addedGeoJSON.getBounds(), {
+	// map.fitBounds(addedGeoJSON.getBounds(), {
+	// 	padding: [20, 20]
+	// });
+
+	map.fitBounds(featureGroup.getBounds(), {
 		padding: [20, 20]
 	});
 
