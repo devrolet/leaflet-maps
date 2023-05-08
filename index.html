@@ -77,7 +77,7 @@
 	let geojson = {"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ -84.1413499866286, 33.80879513146975 ],"type": "Point"}},{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ -83.98638644188586, 33.95633534887867 ],"type": "Point"}},{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ [[-84.26272022610178, 33.854703784090006 ],[-84.18036197854634, 33.743039652769866 ],[-83.96146242583328, 33.86730186936647 ],[-84.26272022610178, 33.854703784090006 ]]],"type": "Polygon"}}]}
 
 	// Add GeoJSON options
-	L.geoJSON(geojson, {
+	let addedGeoJSON = L.geoJSON(geojson, {
 		style: function(feature) {
 			return {
 				color: '#000'
@@ -97,6 +97,11 @@
 		}
 		
 	}).addTo(map);
+
+	// Bounds, add 20px padding
+	map.fitBounds(addedGeoJSON.getBounds(), {
+		padding: [20, 20]
+	});
 
 	map.on('click', onMapClick);
 
