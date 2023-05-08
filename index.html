@@ -111,19 +111,19 @@
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	}).addTo(map);
 
-	// var blackIcon = L.icon({
-	// 	iconUrl: 'svg/map-pin-marker.svg', 
-	// 	iconSize: [32, 32], // size of the icon
-	// 	iconAnchor: [16, 37], // point of the icon which will correspond to marker's location
-	// 	popupAnchor: [0, -30]  // point from which the popup should open relative to the iconAnchor
-	// });
+	var blackIcon = L.icon({
+		iconUrl: 'svg/map-pin-marker.svg', 
+		iconSize: [32, 32], // size of the icon
+		iconAnchor: [16, 37], // point of the icon which will correspond to marker's location
+		popupAnchor: [0, -30]  // point from which the popup should open relative to the iconAnchor
+	});
 
-	// var greenIcon = L.icon({
-	// 	iconUrl: 'svg/map-pin-marker-green.svg', 
-	// 	iconSize: [32, 32], // size of the icon
-	// 	iconAnchor: [16, 37], // point of the icon which will correspond to marker's location
-	// 	popupAnchor: [0, -30]  // point from which the popup should open relative to the iconAnchor
-	// });
+	var greenIcon = L.icon({
+		iconUrl: 'svg/map-pin-marker-green.svg', 
+		iconSize: [32, 32], // size of the icon
+		iconAnchor: [16, 37], // point of the icon which will correspond to marker's location
+		popupAnchor: [0, -30]  // point from which the popup should open relative to the iconAnchor
+	});
 
 	var countriesGeoJSON = false;
 	fetch('json/countries.geo.json', {
@@ -153,8 +153,14 @@
 		var geojson = L.geoJSON(json, {
 			style: function(feature) {
 				return {
-					fillOpacity: 0
+					fillOpacity: 0.3,
+					fillColor: '#333',
+					color: '#333',
+					opacity: 0.3
 				};
+			},
+			pointToLayer: function(geoJsonPoint, latlng) {
+				return L.circle(latlng, 10000*(geoJsonPoint.properties.mag))
 			}
 		}).addTo(map);
 	})
@@ -174,7 +180,7 @@
 	// 	.setContent('We be in the city')
 	// 	.openOn(map);
 
-	// let geojson = {"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ -84.1413499866286, 33.80879513146975 ],"type": "Point"}},{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ -83.98638644188586, 33.95633534887867 ],"type": "Point"}},{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ [[-84.26272022610178, 33.854703784090006 ],[-84.18036197854634, 33.743039652769866 ],[-83.96146242583328, 33.86730186936647 ],[-84.26272022610178, 33.854703784090006 ]]],"type": "Polygon"}}]}
+	let geojson = {"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ -84.1413499866286, 33.80879513146975 ],"type": "Point"}},{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ -83.98638644188586, 33.95633534887867 ],"type": "Point"}},{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ [[-84.26272022610178, 33.854703784090006 ],[-84.18036197854634, 33.743039652769866 ],[-83.96146242583328, 33.86730186936647 ],[-84.26272022610178, 33.854703784090006 ]]],"type": "Polygon"}}]}
 
 	// Add GeoJSON options
 	// let addedGeoJSON = L.geoJSON(geojson, {
