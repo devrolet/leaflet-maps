@@ -141,6 +141,25 @@
 	})
 	.catch(error => console.log(error.message));
 
+	// map.fitBounds(countriesGeoJSON.getBounds());
+
+
+	var earthquakeGeoJSON = false;
+	fetch('json/earthquake-day.geojson', {
+		method: 'GET'
+	})
+	.then(response => response.json())
+	.then(json => {
+		var geojson = L.geoJSON(json, {
+			style: function(feature) {
+				return {
+					fillOpacity: 0
+				};
+			}
+		}).addTo(map);
+	})
+	.catch(error => console.log(error.message));
+
 	map.fitBounds(geojson.getBounds());
 
 
