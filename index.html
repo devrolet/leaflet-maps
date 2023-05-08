@@ -58,7 +58,14 @@
 
 	var blackIcon = L.icon({
 		iconUrl: 'svg/map-pin-marker.svg', 
-		iconSize: [38, 95], // size of the icon
+		iconSize: [32, 32], // size of the icon
+		iconAnchor: [16, 37], // point of the icon which will correspond to marker's location
+		popupAnchor: [0, -30]  // point from which the popup should open relative to the iconAnchor
+	});
+
+	var greenIcon = L.icon({
+		iconUrl: 'svg/map-pin-marker-green.svg', 
+		iconSize: [32, 32], // size of the icon
 		iconAnchor: [16, 37], // point of the icon which will correspond to marker's location
 		popupAnchor: [0, -30]  // point from which the popup should open relative to the iconAnchor
 	});
@@ -98,19 +105,26 @@
 		
 	// }).addTo(map);
 
-	let marker1 = L.marker([33.9304, -84.3733], {
-		icon: blackIcon
-	});
+	let markers = [];
 
-	let marker2 = L.marker([33.6534, -84.4494], {
-		icon: blackIcon
-	});
+	var coordinates = [
+		[33.9304, -84.3733],
+		[33.6534, -84.4494],
+		[33.7748, -84.2963]
+	]
 
-	let marker3 = L.marker([33.7748, -84.2963], {
-		icon: blackIcon
-	});
+	coordinates.forEach(coords => {
+		let marker = L.marker(coords, {
+			icon: blackIcon
+		}).on('mousemove', function(e) {
+			e.target.setIcon(greenIcon);
+		}).on('mouseout', function(e) {
+			e.target.setIcon(blackIcon);
+		});
+		markers.push(marker)
+	})
 
-	let featureGroup = L.featureGroup([marker1, marker2, marker3]).addTo(map);
+	let featureGroup = L.featureGroup(markers).addTo(map);
 
 	// Bounds, add 20px padding
 	// map.fitBounds(addedGeoJSON.getBounds(), {
