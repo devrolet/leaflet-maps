@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
-	<title>Quick Start - Leaflet</title>
+	<title>LeafletJS Course | Home</title>
 	
 	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
 
@@ -18,6 +18,7 @@
 		html, body {
 			height: 100%;
 			margin: 0;
+			padding: 0;
 		}
 		.leaflet-container {
 			height: 400px;
@@ -37,26 +38,46 @@
 		.leaflet-popup-tip {
 			background: black;
 		}
+
+		#overlay {
+			position: absolute;
+			z-index: 1000;
+			background: rgba(255, 255, 255, 0.7);
+			padding: 10px;
+			right: 0;
+			margin: 10px;
+			border-radius: 10px;
+			box-shadow: 1px, 1px, 1px, 1px;
+			min-height: 200px;
+		}
+
+		#overlay h3 {
+			font-family: Arial, Helvetica, sans-serif;
+			text-align: center;
+		}
 	</style>
 
 	
 </head>
 <body>
 
+<div id="overlay">
+	<h3>Map Options</h3>
+	<input type="text" id="current_center" />
+	<button id="toggleLayer">Toggle</button>
+</div>
 
+<div id="map" style="width: 100%;"></div>
 
-<div id="map" style="width: 600px; height: 400px;"></div>
-<input type="text" id="current_center" />
-<button id="toggleLayer">Toggle</button>
 <script>
 
-	const map = L.map('map').setView([33.855348810045356, -84.01982156957057], 12);
-          
+	$('#map').height(window.innerHeight);
 
-	const tiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', 
-	{
-		attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
-		maxZoom: 16
+	const map = L.map('map').setView([33.855348810045356, -84.01982156957057], 12);
+
+	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	}).addTo(map);
 
 	var blackIcon = L.icon({
