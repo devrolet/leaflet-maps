@@ -9,7 +9,7 @@ $('#map').height(window.innerHeight);
 		}
 	})
 
-	const map = L.map('map', { zoomControl: false }).setView([33.855348810045356, -84.01982156957057], 12);
+	const map = L.map('map', { zoomControl: false }).setView([37.0902, -95.7129], 4);
 
 	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
@@ -32,6 +32,10 @@ $('#map').height(window.innerHeight);
 
 	var countriesGeoJSON = false;
 	var earthquakeGeoJSON = false;
+  var filters = {
+    text: '',
+    range: []
+  }
 
 	fetch('json/countries.geo.json', {
 		method: 'GET'
@@ -66,7 +70,6 @@ $('#map').height(window.innerHeight);
 	})
 	.then(response => response.json())
 	.then(json => {
-    console.log(json);
     var min = 0;
     var max = 0;
 		earthquakeGeoJSON = L.geoJSON(json, {
@@ -97,33 +100,53 @@ $('#map').height(window.innerHeight);
 				return L.circle(latlng, 10000*(geoJsonPoint.properties.mag)).bindPopup(html);
 			}
 		}).addTo(map);
-		earthquakeGeoJSON.bringToFront();
+		// earthquakeGeoJSON.bringToFront();
 		// map.fitBounds(countriesGeoJSON.getBounds());
-
+    filters.range = [min, max];
     var slider = document.getElementById('slider');
     noUiSlider.create(slider, {
-        start: [min+1, max-1],
+        start: filters.range,
         tooltips: true,
         connect: true,
         range: {
             'min': min,
             'max': max
         }
+    }).on('slide', function(e) {
+      filters.range = [parseFloat(e[0]), parseFloat(e[1])];
+      earthquakeGeoJSON.eachLayer(function(layer) {
+        filterGeoJSON(layer);
+      });
     });
 	})
 	.catch(error => console.log(error.message));
 
 	$(document).on('keyup', function(e) {
-		var userInput = e.target.value;
+    filters.text = e.target.value;
 		earthquakeGeoJSON.eachLayer(function(layer) {
-      if(layer.feature.properties.title.toLowerCase().indexOf(userInput.toLowerCase())>-1) {
-        layer.addTo(map);
-      } else {
-        map.removeLayer(layer);
-      }
-			console.log(layer);
-		})
-	})
+      filterGeoJSON(layer);
+		});
+    
+	});
+
+  function format(mag) {
+    return mag;
+  }
+
+  function filterGeoJSON(layer) {
+    var numberOfTrue = 0;
+    if(layer.feature.properties.title.toLowerCase().indexOf(filters.text.toLowerCase())>-1) {
+      numberOfTrue += 1;
+    }
+    if(layer.feature.properties.mag>=filters.range[0]&&layer.feature.properties.mag<=filters.range[1]) {
+      numberOfTrue += 1;
+    }
+    if(numberOfTrue===2) {
+      layer.addTo(map);
+    } else {
+      map.removeLayer(layer);
+    }
+  }
 
 
 	// Use default marker icon
@@ -210,7 +233,6 @@ $('#map').height(window.innerHeight);
 	// });
 
 	map.on('moveend', function(e) {
-		console.log(map.getCenter());
 		$('#current_center').val(map.getCenter().lat+ ',' +map.getCenter().lng)
 	});
 
