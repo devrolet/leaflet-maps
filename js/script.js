@@ -63,7 +63,6 @@ $('#map').height(window.innerHeight);
 
 					var points = turf.points(earthquakePointsArray);
 					var totalPoints = 0;
-					console.log(layer.feature.geometry.coordinates);
 					if(layer.feature.geometry.coordinates[0].length===1) {
 						layer.feature.geometry.coordinates.forEach(coords => {
 							var searchWithin = turf.polygon(coords);
@@ -91,7 +90,7 @@ $('#map').height(window.innerHeight);
 
 
 	
-	fetch('json/earthquake-day.geojson', {
+	fetch('json/earthquake-data.geojson', {
 		method: 'GET'
 	})
 	.then(response => response.json())
@@ -101,34 +100,50 @@ $('#map').height(window.innerHeight);
 		});
     var min = 0;
     var max = 0;
-		earthquakeGeoJSON = L.geoJSON(json, {
-			style: function(feature) {
-				return {
-					fillOpacity: 0.1,
-					fillColor: '#333',
-					color: '#333',
-					opacity: 0.3
-				};
-			},
-			pointToLayer: function(geoJsonPoint, latlng) {
-        // get min/max
-
-        if(geoJsonPoint.properties.mag<min || min === 0) {
-          min = geoJsonPoint.properties.mag;
-        }
-        if(geoJsonPoint.properties.mag>max) {
-          max = geoJsonPoint.properties.mag;
-        }
-
-        // add popup html
-        var html = '';
-        var arrayOfProps = ['title', 'type', 'mag', 'place', 'time', 'url']
-        arrayOfProps.forEach(function(prop) {
-          html += `<strong>${prop}</strong>: ${geoJsonPoint.properties[prop]} <br />`
-        })
-				return L.circle(latlng, 10000*(geoJsonPoint.properties.mag)).bindPopup(html);
-			}
+		var heatMapPoints = [];
+		json.features.forEach(function(feature) {
+			heatMapPoints.push([feature.geometry.coordinates[1], feature.geometry.coordinates[0], feature.properties.mag]);
+				if(feature.properties.mag<min || min === 0) {
+						min = feature.properties.mag;
+					}
+				if(feature.properties.mag>max) {
+						max = feature.properties.mag;
+				}
+		})
+		console.log(heatMapPoints);
+		var heat = L.heatLayer(heatMapPoints, {
+			radius: 25,
+			minOpacity: 0.4,
+			gradient: {0.4: 'blue', 0.5: 'lime', 0.6: 'red'}
 		}).addTo(map);
+		// earthquakeGeoJSON = L.geoJSON(json, {
+		// 	style: function(feature) {
+		// 		return {
+		// 			fillOpacity: 0.1,
+		// 			fillColor: '#333',
+		// 			color: '#333',
+		// 			opacity: 0.3
+		// 		};
+		// 	},
+		// 	pointToLayer: function(geoJsonPoint, latlng) {
+    //     // get min/max
+
+    //     if(geoJsonPoint.properties.mag<min || min === 0) {
+    //       min = geoJsonPoint.properties.mag;
+    //     }
+    //     if(geoJsonPoint.properties.mag>max) {
+    //       max = geoJsonPoint.properties.mag;
+    //     }
+
+    //     // add popup html
+    //     var html = '';
+    //     var arrayOfProps = ['title', 'type', 'mag', 'place', 'time', 'url']
+    //     arrayOfProps.forEach(function(prop) {
+    //       html += `<strong>${prop}</strong>: ${geoJsonPoint.properties[prop]} <br />`
+    //     })
+		// 		return L.circle(latlng, 10000*(geoJsonPoint.properties.mag)).bindPopup(html);
+		// 	}
+		// }).addTo(map);
 		// earthquakeGeoJSON.bringToFront();
 		// map.fitBounds(countriesGeoJSON.getBounds());
     filters.range = [min, max];
