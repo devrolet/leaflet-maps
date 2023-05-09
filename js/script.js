@@ -76,7 +76,11 @@ $('#map').height(window.innerHeight);
 				};
 			},
 			pointToLayer: function(geoJsonPoint, latlng) {
-				return L.circle(latlng, 10000*(geoJsonPoint.properties.mag))
+        var html = '';
+        for(let prop in geoJsonPoint.properties) {
+          html += `<strong>${prop}</strong>: ${geoJsonPoint.properties[prop]} <br />`
+        }
+				return L.circle(latlng, 10000*(geoJsonPoint.properties.mag)).bindPopup(html);
 			}
 		}).addTo(map);
 		earthquakeGeoJSON.bringToFront();
