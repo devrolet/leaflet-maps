@@ -102,7 +102,7 @@ $('#map').height(window.innerHeight);
     var max = 0;
 		var heatMapPoints = [];
 		json.features.forEach(function(feature) {
-			heatMapPoints.push([feature.geometry.coordinates[1], feature.geometry.coordinates[0], feature.properties.mag]);
+			heatMapPoints.push([feature.geometry.coordinates[1], feature.geometry.coordinates[0], (feature.properties.mag / 6.2)]);
 				if(feature.properties.mag<min || min === 0) {
 						min = feature.properties.mag;
 					}
@@ -110,11 +110,16 @@ $('#map').height(window.innerHeight);
 						max = feature.properties.mag;
 				}
 		})
-		console.log(heatMapPoints);
 		var heat = L.heatLayer(heatMapPoints, {
 			radius: 25,
 			minOpacity: 0.4,
-			gradient: {0.4: 'blue', 0.5: 'lime', 0.6: 'red'}
+			gradient: {
+				'0.00': 'rgb(255,0,255)',
+				'0.25': 'rgb(0,0,255)',
+				'0.50': 'rgb(0,255,0)',
+				'0.75': 'rgb(255,255,0)',
+				'1.00': 'rgb(255,0,0)'
+			}
 		}).addTo(map);
 		// earthquakeGeoJSON = L.geoJSON(json, {
 		// 	style: function(feature) {
