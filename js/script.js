@@ -66,6 +66,9 @@ $('#map').height(window.innerHeight);
 	})
 	.then(response => response.json())
 	.then(json => {
+    console.log(json);
+    var min = 0;
+    var max = 0;
 		earthquakeGeoJSON = L.geoJSON(json, {
 			style: function(feature) {
 				return {
@@ -76,6 +79,16 @@ $('#map').height(window.innerHeight);
 				};
 			},
 			pointToLayer: function(geoJsonPoint, latlng) {
+        // get min/max
+
+        if(geoJsonPoint.properties.mag<min || min === 0) {
+          min = geoJsonPoint.properties.mag;
+        }
+        if(geoJsonPoint.properties.mag>max) {
+          max = geoJsonPoint.properties.mag;
+        }
+
+        // add popup html
         var html = '';
         var arrayOfProps = ['title', 'type', 'mag', 'place', 'time', 'url']
         arrayOfProps.forEach(function(prop) {
@@ -86,6 +99,17 @@ $('#map').height(window.innerHeight);
 		}).addTo(map);
 		earthquakeGeoJSON.bringToFront();
 		// map.fitBounds(countriesGeoJSON.getBounds());
+
+    var slider = document.getElementById('slider');
+    noUiSlider.create(slider, {
+        start: [min+1, max-1],
+        tooltips: true,
+        connect: true,
+        range: {
+            'min': min,
+            'max': max
+        }
+    });
 	})
 	.catch(error => console.log(error.message));
 
@@ -113,7 +137,7 @@ $('#map').height(window.innerHeight);
 	// 	.setContent('We be in the city')
 	// 	.openOn(map);
 
-	let geojson = {"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ -84.1413499866286, 33.80879513146975 ],"type": "Point"}},{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ -83.98638644188586, 33.95633534887867 ],"type": "Point"}},{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ [[-84.26272022610178, 33.854703784090006 ],[-84.18036197854634, 33.743039652769866 ],[-83.96146242583328, 33.86730186936647 ],[-84.26272022610178, 33.854703784090006 ]]],"type": "Polygon"}}]}
+	// let geojson = {"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ -84.1413499866286, 33.80879513146975 ],"type": "Point"}},{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ -83.98638644188586, 33.95633534887867 ],"type": "Point"}},{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ [[-84.26272022610178, 33.854703784090006 ],[-84.18036197854634, 33.743039652769866 ],[-83.96146242583328, 33.86730186936647 ],[-84.26272022610178, 33.854703784090006 ]]],"type": "Polygon"}}]}
 
 	// Add GeoJSON options
 	// let addedGeoJSON = L.geoJSON(geojson, {
@@ -163,27 +187,27 @@ $('#map').height(window.innerHeight);
 	// 	padding: [20, 20]
 	// });
 
-	map.fitBounds(featureGroup.getBounds(), {
-		padding: [20, 20]
-	});
+	// map.fitBounds(featureGroup.getBounds(), {
+	// 	padding: [20, 20]
+	// });
 
-	var options = {units: 'miles'};
+	// var options = {units: 'miles'};
 
-	map.on('mousemove', e => {
-		// console.log(e);
-		var from = turf.point([e.latlng.lat, e.latlng.lng]);
-		markers.forEach(marker => {
-			var to = turf.point([marker.getLatLng().lat, marker.getLatLng().lng]);
-			var distance = turf.distance(from, to, options);
-			if(distance<10) {
-				marker.setIcon(greenIcon);
-			} else {
-				marker.setIcon(blackIcon);
-			}
-		});
+	// map.on('mousemove', e => {
+	// 	// console.log(e);
+	// 	var from = turf.point([e.latlng.lat, e.latlng.lng]);
+	// 	markers.forEach(marker => {
+	// 		var to = turf.point([marker.getLatLng().lat, marker.getLatLng().lng]);
+	// 		var distance = turf.distance(from, to, options);
+	// 		if(distance<10) {
+	// 			marker.setIcon(greenIcon);
+	// 		} else {
+	// 			marker.setIcon(blackIcon);
+	// 		}
+	// 	});
 
 		
-	});
+	// });
 
 	map.on('moveend', function(e) {
 		console.log(map.getCenter());
@@ -197,3 +221,4 @@ $('#map').height(window.innerHeight);
 	// 		featureGroup.addTo(map);
 	// 	}
 	// });
+
