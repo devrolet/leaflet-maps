@@ -85,10 +85,6 @@ $('#map').height(window.innerHeight);
 		}).addTo(map);
 	})
 	.catch(error => console.log(error.message));
-
-	// map.fitBounds(countriesGeoJSON.getBounds());
-
-
 	
 	fetch('json/earthquake-data.geojson', {
 		method: 'GET'
@@ -121,6 +117,9 @@ $('#map').height(window.innerHeight);
 				'1.00': 'rgb(255,0,0)'
 			}
 		}).addTo(map);
+
+		// Keep this for future reference
+
 		// earthquakeGeoJSON = L.geoJSON(json, {
 		// 	style: function(feature) {
 		// 		return {
@@ -151,6 +150,9 @@ $('#map').height(window.innerHeight);
 		// }).addTo(map);
 		// earthquakeGeoJSON.bringToFront();
 		// map.fitBounds(countriesGeoJSON.getBounds());
+
+		// End Keep This for future reference
+
     filters.range = [min, max];
     var slider = document.getElementById('slider');
     noUiSlider.create(slider, {
@@ -208,99 +210,8 @@ $('#map').height(window.innerHeight);
     }
   }
 
-
-	// Use default marker icon
-	// L.marker([33.855348810045356, -84.01982156957057]).addTo(map).bindPopup('Snellville, GA');
-
-	// Use custom marker icon
-	// L.marker([33.9562, -83.9880], {icon: blackIcon}).addTo(map).bindPopup('Lawrenceville, GA');
-
-	// let popup = L.popup({ maxWidth: 400 })
-	// 	.setLatLng([33.7488, -84.3877])
-	// 	.setContent('We be in the city')
-	// 	.openOn(map);
-
-	// let geojson = {"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ -84.1413499866286, 33.80879513146975 ],"type": "Point"}},{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ -83.98638644188586, 33.95633534887867 ],"type": "Point"}},{"type": "Feature", "properties": {}, "geometry": {"coordinates": [ [[-84.26272022610178, 33.854703784090006 ],[-84.18036197854634, 33.743039652769866 ],[-83.96146242583328, 33.86730186936647 ],[-84.26272022610178, 33.854703784090006 ]]],"type": "Polygon"}}]}
-
-	// Add GeoJSON options
-	// let addedGeoJSON = L.geoJSON(geojson, {
-	// 	style: function(feature) {
-	// 		return {
-	// 			color: '#000'
-	// 		}
-	// 	},
-	// 	pointToLayer: function(geoJsonPoint, latlng) {
-	// 		return L.marker(latlng, {
-	// 				icon: blackIcon
-	// 			});
-	// 	},
-	// 	onEachFeature: function(feature, layer) {
-	// 		if(feature.geometry.type === 'Point') {
-	// 			layer.bindPopup('Welcome to Atlanta');
-	// 			// The line below displays the lat/lng of the point.
-	// 			// layer.bindPopup(feature.geometry.coordinates.join(','));
-	// 		}
-	// 	}
-		
-	// }).addTo(map);
-
-	// let markers = [];
-
-	// var coordinates = [
-	// 	[33.9304, -84.3733],
-	// 	[33.6534, -84.4494],
-	// 	[33.7748, -84.2963]
-	// ]
-
-	// coordinates.forEach(coords => {
-	// 	let marker = L.marker(coords, {
-	// 		icon: blackIcon
-	// 	}).on('mousemove', function(e) {
-	// 		e.target.setIcon(greenIcon);
-	// 	}).on('mouseout', function(e) {
-	// 		e.target.setIcon(blackIcon);
-	// 	});
-	// 	markers.push(marker)
-	// })
-
-	// let featureGroup = L.featureGroup(markers).addTo(map);
-
-	// Bounds, add 20px padding
-	// map.fitBounds(addedGeoJSON.getBounds(), {
-	// 	padding: [20, 20]
-	// });
-
-	// map.fitBounds(featureGroup.getBounds(), {
-	// 	padding: [20, 20]
-	// });
-
-	// var options = {units: 'miles'};
-
-	// map.on('mousemove', e => {
-	// 	// console.log(e);
-	// 	var from = turf.point([e.latlng.lat, e.latlng.lng]);
-	// 	markers.forEach(marker => {
-	// 		var to = turf.point([marker.getLatLng().lat, marker.getLatLng().lng]);
-	// 		var distance = turf.distance(from, to, options);
-	// 		if(distance<10) {
-	// 			marker.setIcon(greenIcon);
-	// 		} else {
-	// 			marker.setIcon(blackIcon);
-	// 		}
-	// 	});
-
-		
-	// });
-
 	map.on('moveend', function(e) {
 		$('#current_center').val(map.getCenter().lat+ ',' +map.getCenter().lng)
 	});
 
-	// $(document).on('click', '#toggleLayer', function() {
-	// 	if(map.hasLayer(featureGroup)) {
-	// 		map.removeLayer(featureGroup)
-	// 	} else {
-	// 		featureGroup.addTo(map);
-	// 	}
-	// });
 
