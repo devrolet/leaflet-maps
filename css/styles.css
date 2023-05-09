@@ -1,0 +1,57 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+.leaflet-container {
+  height: 400px;
+  width: 600px;
+  max-width: 100%;
+  max-height: 100%;
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 0;
+  background: black;
+  color: white;
+  font-size: 12px;
+}
+.leaflet-popup-content {
+  margin: 5px;
+}
+.leaflet-popup-tip {
+  background: black;
+}
+
+#overlay {
+  position: absolute;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 10px;
+  right: 0;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 1px, 1px, 1px, 1px;
+  min-height: 200px;
+}
+
+#overlay h3, #slide-in h2 {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+#slide-in {
+  padding: 10px;
+  position: absolute;
+  width: 250px;
+  z-index: 1000;
+  background: white;
+  margin-left: -270px;
+  transition: 1.5s;
+}
+
+#slide-in.in {
+  margin-left: 0px;
+}		
