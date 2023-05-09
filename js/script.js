@@ -135,9 +135,18 @@ $('#map').height(window.innerHeight);
     
 	});
 
-  function format(mag) {
-    return mag;
-  }
+  $(document).on('change', '#country-select', function(e) {
+		var newCountry = e.target.value;
+		if(newCountry!=='') {
+			countriesGeoJSON.eachLayer(function(layer) {
+				if(layer.feature.properties.name===e.target.value) {
+					$('#country-information').html(`${layer.feature.properties.name}: ${layer.feature.id}`);
+				}
+			});
+		} else {
+			$('#country-information').html('');
+		}
+	});
 
   function filterGeoJSON(layer) {
     var numberOfTrue = 0;
