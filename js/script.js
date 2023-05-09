@@ -32,6 +32,7 @@ $('#map').height(window.innerHeight);
 
 	var countriesGeoJSON = false;
 	var earthquakeGeoJSON = false;
+	var earthquakePointsArray = [];
   var filters = {
     text: '',
     range: []
@@ -57,10 +58,29 @@ $('#map').height(window.innerHeight);
 			},
 			onEachFeature: function(feature, layer) {
 				layer.on('mouseover', function() {
-					layer.setStyle({fillOpacity: 0.3})
+					layer.setStyle({fillOpacity: 0.3});
+					$('#country-select').val('');
+
+					var points = turf.points(earthquakePointsArray);
+					var totalPoints = 0;
+					console.log(layer.feature.geometry.coordinates);
+					if(layer.feature.geometry.coordinates[0].length===1) {
+						layer.feature.geometry.coordinates.forEach(coords => {
+							var searchWithin = turf.polygon(coords);
+							var ptsWithin = turf.pointsWithinPolygon(points, searchWithin);
+							totalPoints += ptsWithin.features.length;
+						});
+					} else {
+							var searchWithin = turf.polygon(layer.feature.geometry.coordinates);
+							var ptsWithin = turf.pointsWithinPolygon(points, searchWithin);
+							totalPoints += ptsWithin.features.length;
+					}
+					
+					$('#country-information').html(`${layer.feature.properties.name}(${layer.feature.id}): ${totalPoints.toString()}`);
 				}),
 				layer.on('mouseout', function() {
 					layer.setStyle({fillOpacity: 0})
+					$('#country-information').html('');
 				})
 			}
 		}).addTo(map);
@@ -76,6 +96,9 @@ $('#map').height(window.innerHeight);
 	})
 	.then(response => response.json())
 	.then(json => {
+		json.features.forEach(function(feature) {
+			earthquakePointsArray.push(feature.geometry.coordinates)
+		});
     var min = 0;
     var max = 0;
 		earthquakeGeoJSON = L.geoJSON(json, {
@@ -141,7 +164,9 @@ $('#map').height(window.innerHeight);
 			countriesGeoJSON.eachLayer(function(layer) {
 				if(layer.feature.properties.name===e.target.value) {
 					$('#country-information').html(`${layer.feature.properties.name}: ${layer.feature.id}`);
+					map.fitBounds(layer.getBounds());
 				}
+				
 			});
 		} else {
 			$('#country-information').html('');
