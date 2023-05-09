@@ -42,6 +42,12 @@ $('#map').height(window.innerHeight);
 	})
 	.then(response => response.json())
 	.then(json => {
+		// loop to get country list
+		var htmlToAdd = [];
+		json.features.forEach(function(feature) {
+			$('#country-select').append(`<option value"${feature.properties.name}">${feature.properties.name}</option>`);
+		});
+
 		countriesGeoJSON = L.geoJSON(json, {
 			style: function(feature) {
 				return {
