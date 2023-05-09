@@ -96,27 +96,31 @@ $('#map').height(window.innerHeight);
 		});
     var min = 0;
     var max = 0;
-		var heatMapPoints = [];
+		var markers = L.markerClusterGroup();
+		// var heatMapPoints = [];
 		json.features.forEach(function(feature) {
-			heatMapPoints.push([feature.geometry.coordinates[1], feature.geometry.coordinates[0], (feature.properties.mag / 6.2)]);
-				if(feature.properties.mag<min || min === 0) {
-						min = feature.properties.mag;
-					}
-				if(feature.properties.mag>max) {
-						max = feature.properties.mag;
-				}
+			markers.addLayer(L.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]]));
 		})
-		var heat = L.heatLayer(heatMapPoints, {
-			radius: 25,
-			minOpacity: 0.4,
-			gradient: {
-				'0.00': 'rgb(255,0,255)',
-				'0.25': 'rgb(0,0,255)',
-				'0.50': 'rgb(0,255,0)',
-				'0.75': 'rgb(255,255,0)',
-				'1.00': 'rgb(255,0,0)'
-			}
-		}).addTo(map);
+		map.addLayer(markers);
+		// 	heatMapPoints.push([feature.geometry.coordinates[1], feature.geometry.coordinates[0], (feature.properties.mag / 6.2)]);
+		// 		if(feature.properties.mag<min || min === 0) {
+		// 				min = feature.properties.mag;
+		// 			}
+		// 		if(feature.properties.mag>max) {
+		// 				max = feature.properties.mag;
+		// 		}
+		// })
+		// var heat = L.heatLayer(heatMapPoints, {
+		// 	radius: 25,
+		// 	minOpacity: 0.4,
+		// 	gradient: {
+		// 		'0.00': 'rgb(255,0,255)',
+		// 		'0.25': 'rgb(0,0,255)',
+		// 		'0.50': 'rgb(0,255,0)',
+		// 		'0.75': 'rgb(255,255,0)',
+		// 		'1.00': 'rgb(255,0,0)'
+		// 	}
+		// }).addTo(map);
 
 		// Keep this for future reference
 
