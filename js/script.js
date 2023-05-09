@@ -11,10 +11,10 @@ $('#map').height(window.innerHeight);
 
 	const map = L.map('map', { zoomControl: false }).setView([37.0902, -95.7129], 4);
 
-	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		maxZoom: 19,
-		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-	}).addTo(map);
+	const tiles = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}', {
+			maxZoom: 20,
+			attribution: 'Tiles courtesy of the <a href="https://usgs.gov/">U.S. Geological Survey</a>'
+		}).addTo(map);
 
 	var blackIcon = L.icon({
 		iconUrl: 'svg/map-pin-marker.svg', 
