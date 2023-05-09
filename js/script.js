@@ -87,6 +87,11 @@ $('#map').height(window.innerHeight);
 	$(document).on('keyup', function(e) {
 		var userInput = e.target.value;
 		earthquakeGeoJSON.eachLayer(function(layer) {
+      if(layer.feature.properties.title.toLowerCase().indexOf(userInput.toLowerCase())>-1) {
+        layer.addTo(map);
+      } else {
+        map.removeLayer(layer);
+      }
 			console.log(layer);
 		})
 	})
