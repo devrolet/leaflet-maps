@@ -96,7 +96,16 @@ $('#map').height(window.innerHeight);
 		});
     var min = 0;
     var max = 0;
-		var markers = L.markerClusterGroup();
+		var markers = L.markerClusterGroup({
+			iconCreateFunction: function(cluster) {
+				// var width = cluster.getChildCount()*2;
+				return L.divIcon({ html: `<div class="clusterdiv"><strong>${cluster.getChildCount()}</strong></div>`});
+			},
+			polygonOptions: {
+				weight: 0.5,
+				color: 'black'
+			}
+		});
 		// var heatMapPoints = [];
 		json.features.forEach(function(feature) {
 			markers.addLayer(L.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]]));
