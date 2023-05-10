@@ -227,4 +227,21 @@ $('#map').height(window.innerHeight);
 		$('#current_center').val(map.getCenter().lat+ ',' +map.getCenter().lng)
 	});
 
-
+// Geolocation
+// setInterval(function() { // For evil doing lol
+	if("geolocation" in navigator) {
+			navigator.geolocation.getCurrentPosition(function(position) {
+			console.log(position.coords.latitude, position.coords.longitude);
+			L.circle([position.coords.latitude, position.coords.longitude], {
+				radius: 1000,
+				opacity: 1,
+				color: 'white',
+				weight: 1,
+				fillOpacity: 0.7,
+				fillColor: 'blue'
+			}).addTo(map);
+		});
+	}else {
+			console.log("Geolocation is unavailable...")
+	}
+// }, 1000);
